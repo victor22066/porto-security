@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pra Quando Você Precisar</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #1e1e2f, #2a2a40);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 420px;
+      padding: 24px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+    h1 { font-size: 1.5rem; margin-bottom: 12px; }
+    p { font-size: 1rem; line-height: 1.5; opacity: 0.9; }
+
+    .tabs {
+      display: flex;
+      justify-content: space-between;
+      margin: 16px 0;
+      gap: 8px;
+    }
+    .tabs button {
+      flex: 1;
+      padding: 8px;
+      border: none;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .tabs button:hover { background: rgba(255,255,255,0.2); }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    .action-button {
+      margin-top: 16px;
+      padding: 12px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 999px;
+      background: #ff6b81;
+      color: #fff;
+      cursor: pointer;
+    }
+    .action-button:hover { background: #ff4f6a; }
+
+    .timer { margin-top: 12px; font-size: 1.2rem; }
+    iframe { margin-top: 16px; width: 100%; height: 200px; border-radius: 12px; border: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Ei… respira comigo 🤍</h1>
+
+    <div class="tabs">
+      <button onclick="openTab('calma')">Calma</button>
+      <button onclick="openTab('desenhar')">Desenhar</button>
+      <button onclick="openTab('fazer')">Fazer Algo</button>
+    </div>
+
+    <div style="margin-top:12px; display:flex; gap:8px;">
+      <a href="https://wa.me/qr/RBBDJ6ICSCTTH1" target="_blank" style="flex:1; text-decoration:none;">
+        <button class="action-button" style="width:100%;">Me chama no WhatsApp</button>
+      </a>
+    </div>
+
+    <div id="calma" class="tab-content active">
+      <p>
+        Se você chegou aqui, é porque sua cabeça tá acelerada.
+        Não precisa rolar nada agora.
+        Fica aqui comigo só um pouquinho.
+      </p>
+      <button class="action-button" onclick="startTimer()">Ficar 10 minutos comigo</button>
+      <div class="timer" id="timer"></div>
+      <iframe src="https://www.youtube.com/embed/5qap5aO4i9A" allow="autoplay; encrypted-media"></iframe>
+      <p style="margin-top:16px; font-size:0.9rem; opacity:0.7;">Quando acabar, se quiser, me chama.</p>
+    </div>
+
+    <div id="desenhar" class="tab-content">
+      <p>Pega um papel ou abre um app de desenho e tenta isso:</p>
+      <ul style="text-align:left; font-size:0.95rem;">
+        <li>Desenha linhas sem pensar</li>
+        <li>Desenha como você tá se sentindo agora</li>
+        <li>Desenha algo que te deixa em paz</li>
+      </ul>
+      <a href="https://quickdraw.withgoogle.com/?locale=pt_BR" target="_blank" style="text-decoration:none;">
+        <button class="action-button">Abrir site de desenho</button>
+      </a>
+      <p style="opacity:0.8; margin-top:8px;">Não precisa ficar bonito. Só precisa sair da cabeça.</p>
+    </div>
+
+    <div id="fazer" class="tab-content">
+      <p>Escolhe uma coisa simples:</p>
+      <ul style="text-align:left; font-size:0.95rem;">
+        <li>Beber um copo de água</li>
+        <li>Alongar os ombros e o pescoço</li>
+        <li>Arrumar algo pequeno perto de você</li>
+        <li>Respirar fundo 5 vezes</li>
+      </ul>
+      <p style="opacity:0.8;">Depois disso, você pode voltar aqui.</p>
+    </div>
+  </div>
+
+  <script>
+    // controle global do timer (declarado UMA vez)
+    let interval = null;
+
+    function openTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      const target = document.getElementById(tabId);
+      if (target) target.classList.add('active');
+    }
+
+    function startTimer() {
+      let time = 10 * 60; // 10 minutos
+      const timerEl = document.getElementById('timer');
+      if (!timerEl) return;
+
+      if (interval) clearInterval(interval);
+
+      interval = setInterval(() => {
+        const minutes = Math.floor(time / 60);
+        const seconds = time % 60;
+        timerEl.textContent = `${minutes}:${seconds.toString().padStart(2,'0')}`;
+
+        if (time <= 0) {
+          clearInterval(interval);
+          interval = null;
+          timerEl.textContent = 'Eu ainda tô aqui.';
+        }
+        time--;
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
